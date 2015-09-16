@@ -238,7 +238,13 @@
         (sum (* a (call f game)))))
 
 (def best-moves (game vect)
-  "Find the best series of moves for this game."
+  "Find the best series of moves for this game. This returns an object
+   that is meant to be passed to perform-moves. The object is list
+   containing two elements. To execute the moves, rotate clockwise by
+   the number of times specified by the first element in the
+   list. Then move all of the way to the left. Then move to the right
+   the number of times specified by the second element in the
+   list. Then move down until the piece locks."
   (with (best-score most-negative-fixnum
          best-moves nil)
     (iter (for rotates from 0 to 4)
@@ -259,7 +265,11 @@
     best-moves))
 
 (def perform-moves (game (rotates rights))
-  "Performs all of the moves."
+  "Performs the given moves on GAME. The moves should be specified as
+   a two element list. First this rotates by the number specified as
+   the first element of the list. Then it moves all of the way to the
+   left. Then it moves to the right by the number of times specified
+   by the second element. Then it moves down until the piece locks."
   (calln rotates #'rotate-cw game)
   (while (valid-move game 'left)
     (left game))
